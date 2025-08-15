@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>draw</title>
+</head>
+<style>
+    *{margin: 0%;;}
+    :root{
+        --a:'';
+    }
+    #setting{
+        height: 100vh;
+        width: 100%;
+        background:darkgoldenrod;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    #set{
+        height: fit-content;width: fit-content;
+        padding: 20px 30px;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        flex-direction: column;
+        gap: 20px;
+        border-radius: 5px;
+        
+    }
+    #chois{
+        height: fit-content;width: fit-content;
+        
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        flex-direction: column;
+        gap: 20px;
+        border-radius: 5px;
+    }
+    input{
+        border: solid  darkgoldenrod 2px;
+        border-radius: 5px;
+        padding: 5px;
+        height: 20px;
+        width: 90%;
+    }
+    .bt{
+        color: white;
+        background:darkgoldenrod;
+        font-size: 20px;
+        font-weight: 600;
+        font-family: arial;
+        padding: 5px 40px ;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    #play{
+        border-radius: 5px;
+        background: white;
+        padding: 30px;
+        display: none;align-items: center;justify-content: center;
+        flex-direction: column;gap: 20px;
+    }
+    #cir{
+        width:300px;
+        background: black;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background:var(--a);
+        display: flex;align-items: center;justify-content: center;
+        
+    }
+    #arow{
+        height: 40px;
+        aspect-ratio:1/1.6;
+        background: black;
+        clip-path: polygon(0 0 ,100% 0 ,50% 100%);
+        margin-bottom:-40px ;
+        z-index: 3;
+
+    }
+    .w{
+        color: white;
+        font-size: 20px;
+        font-weight: 600;
+        font-family: arial;
+    }
+</style>
+<body>
+    <section id="setting">
+        <div id="set">
+            <input type="number" id="num" placeholder="number of choices" onchange="inp()">
+            <div id="chois"></div>
+            <div class="bt" onclick="go()">go</div>
+        </div>
+        <div id="play">
+            <div id="arow"></div>
+            <div id="cir"></div>
+            <div class="bt" onclick="roll()">start</div>
+            <div class="bt" onclick="back()">back</div>
+        </div>
+    </section>
+
+
+</body>
+<script>
+let d=0
+    function inp(){
+        let n=document.getElementById("num").value
+        let m=""
+        for(let i=1;i<=n;i++){
+            m+='<input type="text" class="inp" placeholder="choice '+i+'" id="i'+i+'">'
+        }
+        document.getElementById('chois').innerHTML=m
+    }
+    function go(){
+        if(document.getElementById("num").value>=2){
+            document.getElementById('set').style.display='none'
+            document.getElementById('play').style.display='flex'
+            let o=document.querySelectorAll('.inp')
+            let n=document.getElementById("num").value
+            let mt=''
+            let mc=''
+
+            for(let i=1;i<=n;i++){
+                let my=document.getElementById("i"+i).value
+                let c="hsl("+parseInt(Math.random()*360)+"deg,100%,20%)"
+                mt+='<div id="w'+i+'" class="w"style=" position: absolute;transform: translateY( '+(-120)+'px); rotate :'+(360/n*(i+0.5)) +'deg;";>'+my+'</div>'
+                mc+=c+" "+(100/n)*(i-1)+"% "+(100/n)*(i)+"%"
+                if(i!=n){
+                    mc+=','
+                }
+            }
+            document.getElementById('cir').innerHTML=mt
+            document.documentElement.style.setProperty('--a',"repeating-conic-gradient("+mc+")")
+        }
+    }
+    function roll(){
+        let l
+        if(d%2==0){
+            l=2880
+        }else{
+            l=0
+        }
+        document.getElementById('cir').style="transition: all 10s cubic-bezier(.5,0,.5,1) ; rotate: "+(Math.random()*720+l)+"deg;"
+        d++
+    }
+    function back(){
+        document.getElementById('set').style.display='flex'
+        document.getElementById('play').style.display='none'
+    }
+</script>
+</html>
